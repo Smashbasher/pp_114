@@ -26,6 +26,9 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -37,6 +40,9 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 
@@ -52,6 +58,7 @@ public class UserDaoHibernateImpl implements UserDao {
                 transaction.rollback();
             }
         }
+        System.out.println("User " + name + " " + lastName + " is added to database.");
     }
 
     @Override
@@ -73,14 +80,11 @@ public class UserDaoHibernateImpl implements UserDao {
         Session session = sessionFactory.openSession();
         CriteriaQuery<User> criteriaQuery = session.getCriteriaBuilder().createQuery(User.class);
         criteriaQuery.from(User.class);
-        transaction = session.beginTransaction();
         List<User> userList = session.createQuery(criteriaQuery).getResultList();
         try {
-            transaction.commit();
             return userList;
         } catch (HibernateException e) {
             e.printStackTrace();
-            transaction.rollback();
         } finally {
             session.close();
         }
@@ -95,6 +99,9 @@ public class UserDaoHibernateImpl implements UserDao {
             transaction.commit();
         } catch (HibernateException e) {
             e.printStackTrace();
+            if (transaction != null) {
+                transaction.rollback();
+            }
         }
     }
 }
