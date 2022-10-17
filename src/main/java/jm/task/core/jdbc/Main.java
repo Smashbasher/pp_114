@@ -9,7 +9,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        UserService service = new UserServiceImpl();
+        UserService service = new UserServiceImpl(new UserDaoHibernateImpl());
 
         service.createUsersTable();
         service.saveUser("Jason", "Williams", (byte) 46);
